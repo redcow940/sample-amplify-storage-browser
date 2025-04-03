@@ -22,18 +22,18 @@ const backend = defineBackend({
  *
  * Note: Ensure the bucket exists before deploying this code, as it only sets up IAM policies and does not create the S3 bucket.
  */
-const customBucketName = "my-existing-bucket";
+const customBucketName = "lokmatvideo";
 
 backend.addOutput({
   version: "1.3",
   storage: {
-    aws_region: "us-east-1",
+    aws_region: "ap-south-1",
     bucket_name: customBucketName,
     buckets: [
       {
         name: customBucketName,
         bucket_name: customBucketName,
-        aws_region: "us-east-1",
+        aws_region: "ap-south-1",
         //@ts-expect-error amplify backend type issue https://github.com/aws-amplify/amplify-backend/issues/2569
         paths: {
           "public/*": {
