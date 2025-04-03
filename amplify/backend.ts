@@ -82,13 +82,15 @@ const authPolicy = new Policy(backend.stack, "customBucketAuthPolicy", {
   statements: [
     new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: [        "s3:GetObject",
+      actions: [
+        "s3:GetObject",
         "s3:PutObject",
         "s3:DeleteObject",
         "s3:ListMultipartUploads", // Required for Multipart Uploads
         "s3:ListBucketMultipartUploads", // Required for listing ongoing multipart uploads
         "s3:AbortMultipartUpload", // Required to cancel failed uploads
-        "s3:ListMultipartUploadParts" // Required to manage upload parts],
+        "s3:ListMultipartUploadParts" // Required to manage upload parts
+      ],
       resources: [
         `arn:aws:s3:::${customBucketName}/public/*`,
         `arn:aws:s3:::${customBucketName}/admin/*`,
@@ -97,10 +99,7 @@ const authPolicy = new Policy(backend.stack, "customBucketAuthPolicy", {
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["s3:ListBucket"],
-      resources: [
-        `arn:aws:s3:::${customBucketName}`,
-        `arn:aws:s3:::${customBucketName}/*`,
-      ],
+      resources: [`arn:aws:s3:::${customBucketName}`],
       conditions: {
         StringLike: {
           "s3:prefix": ["public/*", "public/", "admin/*", "admin/"],
@@ -110,6 +109,7 @@ const authPolicy = new Policy(backend.stack, "customBucketAuthPolicy", {
   ],
 });
 
+
 /**
  * Define an inline policy to attach to Admin user role
  * This policy defines how authenticated users can access your existing bucket
@@ -118,22 +118,21 @@ const adminPolicy = new Policy(backend.stack, "customBucketAdminPolicy", {
   statements: [
     new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: [        "s3:GetObject",
+      actions: [
+        "s3:GetObject",
         "s3:PutObject",
         "s3:DeleteObject",
         "s3:ListMultipartUploads",
         "s3:ListBucketMultipartUploads",
         "s3:AbortMultipartUpload",
-        "s3:ListMultipartUploadParts"],
+        "s3:ListMultipartUploadParts"
+      ],
       resources: [`arn:aws:s3:::${customBucketName}/admin/*`],
     }),
     new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ["s3:ListBucket"],
-      resources: [
-        `arn:aws:s3:::${customBucketName}`,
-        `arn:aws:s3:::${customBucketName}/*`,
-      ],
+      resources: [`arn:aws:s3:::${customBucketName}`],
       conditions: {
         StringLike: {
           "s3:prefix": ["admin/*", "admin/"],
@@ -142,6 +141,7 @@ const adminPolicy = new Policy(backend.stack, "customBucketAdminPolicy", {
     }),
   ],
 });
+
 
 // Add the policies to the unauthenticated user role
 backend.auth.resources.unauthenticatedUserIamRole.attachInlinePolicy(
